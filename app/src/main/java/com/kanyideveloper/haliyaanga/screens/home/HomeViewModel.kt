@@ -22,7 +22,7 @@ class HomeViewModel @Inject constructor(
     val currentLocation: State<String> = _currentLocation
 
     init {
-        //getWeatherData(currentLocation.value)
+        getWeatherData(currentLocation.value)
     }
 
     private fun getWeatherData(location: String) {
