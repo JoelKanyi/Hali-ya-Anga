@@ -1,5 +1,6 @@
 package com.kanyideveloper.haliyaanga.data.remote
 
+import com.kanyideveloper.haliyaanga.BuildConfig.API_KEY
 import com.kanyideveloper.haliyaanga.data.response.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -10,7 +10,9 @@ class DataRepository(private val api: ApiService) {
 
     suspend fun getWeatherData(location: String): Resource<WeatherResponse> {
         return try {
-            return api.getWeatherData()
+            Resource.Success(
+                data = api.getWeatherData(location)
+            )
         } catch (e: IOException) {
             return Resource.Error(
                 message = "Oops! couldn't reach server, check your internet connection."
