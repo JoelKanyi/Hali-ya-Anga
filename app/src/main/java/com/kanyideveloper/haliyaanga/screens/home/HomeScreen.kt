@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,6 +25,7 @@ import com.kanyideveloper.haliyaanga.R
 import com.kanyideveloper.haliyaanga.model.Forecastday
 import com.kanyideveloper.haliyaanga.screens.common.StandardToolbar
 import com.kanyideveloper.haliyaanga.ui.theme.SecondaryPrimaryDark
+import com.kanyideveloper.haliyaanga.util.dayOfTheWeek
 import com.kanyideveloper.haliyaanga.util.formatDate
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -64,6 +64,7 @@ fun HomeScreen(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Icon(
+                                modifier = Modifier.size(14.dp),
                                 imageVector = Icons.Outlined.LocationOn,
                                 contentDescription = null,
                                 tint = Color.White
@@ -73,7 +74,7 @@ fun HomeScreen(
                             Text(
                                 text = "${state.data?.location?.name}, ${state.data?.location?.country}",
                                 color = Color.White,
-                                fontSize = 18.sp
+                                fontSize = 14.sp
                             )
                         }
                     }
@@ -104,7 +105,7 @@ fun HomeScreen(
             }
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         val imageUrl = "https://${state.data?.current?.condition?.icon?.removeRange(0, 2)}"
 
@@ -120,21 +121,22 @@ fun HomeScreen(
             ),
             modifier = Modifier
                 .align(CenterHorizontally)
-                .size(150.dp),
+                .size(100.dp),
             contentDescription = null
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "${state.data?.current?.tempC}${0x00B0.toChar()}",
-            fontSize = 40.sp,
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
             color = Color.White,
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(9.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -157,14 +159,14 @@ fun HomeScreen(
                         .padding(
                             start = 18.dp,
                             end = 18.dp,
-                            top = 10.dp,
-                            bottom = 10.dp
+                            top = 8.dp,
+                            bottom = 8.dp
                         )
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -177,14 +179,14 @@ fun HomeScreen(
             ) {
                 Text(
                     text = "Wind",
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
                 Text(
                     text = "${state.data?.current?.windKph} km/h",
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     color = Color.LightGray,
                     textAlign = TextAlign.Center
                 )
@@ -196,14 +198,14 @@ fun HomeScreen(
             ) {
                 Text(
                     text = "Humidity",
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
                 Text(
                     text = "${state.data?.current?.humidity}%",
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     color = Color.LightGray,
                     textAlign = TextAlign.Center
                 )
@@ -215,14 +217,14 @@ fun HomeScreen(
             ) {
                 Text(
                     text = "Precipitation",
-                    fontSize = 14.sp,
+                    fontSize = 12.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
                 Text(
                     text = "${state.data?.current?.precipMm} mm",
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     color = Color.LightGray,
                     textAlign = TextAlign.Center
                 )
@@ -242,7 +244,7 @@ fun HomeScreen(
                 .fillMaxWidth()
                 .padding(start = 16.dp),
             text = "Hourly Forecast",
-            fontSize = 16.sp,
+            fontSize = 14.sp,
             color = Color.White,
         )
 
@@ -252,14 +254,41 @@ fun HomeScreen(
             contentPadding = PaddingValues(horizontal = 8.dp),
             content = {
                 val forecasts: List<Forecastday> = state.data?.forecast?.forecastday ?: emptyList()
-                items(forecasts){ forecast ->
+                items(forecasts) { forecast ->
                     forecast.hour.forEach { hour ->
-                        DailyForecast(
+                        HourlyForecast(
                             degrees = hour.tempC.toFloat(),
                             icon = "https://${hour.condition.icon.removeRange(0, 2)}",
                             time = hour.time
                         )
                     }
+                }
+            }
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp),
+            text = "Daily Forecast",
+            fontSize = 14.sp,
+            color = Color.White,
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 8.dp),
+            content = {
+                val forecasts: List<Forecastday> = state.data?.forecast?.forecastday ?: emptyList()
+                items(forecasts) { forecast ->
+                    DailyForecast(
+                        degrees = forecast.day.avgtempC.toFloat(),
+                        icon = "https://${forecast.day.condition.icon.removeRange(0, 2)}",
+                        day = dayOfTheWeek(forecast.date)
+                    )
                 }
             }
         )
@@ -271,14 +300,14 @@ fun HomeScreen(
 }
 
 @Composable
-fun DailyForecast(
+fun HourlyForecast(
     degrees: Float,
     icon: String,
     time: String
 ) {
     Card(
         modifier = Modifier
-            .size(width = 100.dp, height = 150.dp)
+            .size(width = 90.dp, height = 140.dp)
             .padding(5.dp),
         shape = RoundedCornerShape(8.dp),
         backgroundColor = SecondaryPrimaryDark,
@@ -290,7 +319,7 @@ fun DailyForecast(
         ) {
             Text(
                 text = "${degrees}${0x00B0.toChar()}",
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
@@ -303,13 +332,59 @@ fun DailyForecast(
                         crossfade(true)
                     }
                 ),
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier.size(30.dp),
                 contentDescription = null
             )
             Text(
                 text = time,
+                fontSize = 12.sp,
+                color = Color.LightGray,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+fun DailyForecast(
+    degrees: Float,
+    icon: String,
+    day: String
+) {
+    Card(
+        modifier = Modifier
+            .size(width = 90.dp, height = 140.dp)
+            .padding(5.dp),
+        shape = RoundedCornerShape(8.dp),
+        backgroundColor = SecondaryPrimaryDark,
+        elevation = 5.dp
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = day,
                 fontSize = 14.sp,
                 color = Color.LightGray,
+                textAlign = TextAlign.Center
+            )
+            Image(
+                rememberImagePainter(
+                    data = icon,
+                    builder = {
+                        placeholder(R.drawable.ic_cloud_day_forecast_rain_rainy_icon)
+                        crossfade(true)
+                    }
+                ),
+                modifier = Modifier.size(30.dp),
+                contentDescription = null
+            )
+            Text(
+                text = "${degrees}${0x00B0.toChar()}",
+                fontSize = 12.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
         }
