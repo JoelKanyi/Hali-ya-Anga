@@ -21,3 +21,11 @@ fun dayOfTheWeek(mDate: String): String {
     val weekdayNameFormat: DateFormat = SimpleDateFormat("EEE", locale)
     return weekdayNameFormat.format(date as Date)
 }
+
+@SuppressLint("SimpleDateFormat")
+fun formatTime(hourlyDate: String): String {
+    val deviceFormat = SimpleDateFormat("hh:mma")
+    deviceFormat.timeZone = TimeZone.getDefault()
+    val result1: Date = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(hourlyDate)
+    return deviceFormat.format(result1)
+}

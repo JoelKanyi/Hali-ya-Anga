@@ -27,6 +27,7 @@ import com.kanyideveloper.haliyaanga.screens.common.StandardToolbar
 import com.kanyideveloper.haliyaanga.ui.theme.SecondaryPrimaryDark
 import com.kanyideveloper.haliyaanga.util.dayOfTheWeek
 import com.kanyideveloper.haliyaanga.util.formatDate
+import com.kanyideveloper.haliyaanga.util.formatTime
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import timber.log.Timber
@@ -336,7 +337,7 @@ fun HourlyForecast(
                 contentDescription = null
             )
             Text(
-                text = time,
+                text = formatTime(time),
                 fontSize = 12.sp,
                 color = Color.LightGray,
                 textAlign = TextAlign.Center
