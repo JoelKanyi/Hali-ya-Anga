@@ -126,4 +126,6 @@ dependencies {
     implementation "com.google.accompanist:accompanist-swiperefresh:0.24.3-alpha"
 
     implementation 'androidx.compose.runtime:runtime-livedata:1.2.0-alpha08'
+
+    implementation("com.ehsanmsz:msz-progress-indicator:0.2.0")
 }

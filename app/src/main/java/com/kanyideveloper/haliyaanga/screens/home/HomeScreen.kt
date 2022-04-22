@@ -21,9 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
+import com.ehsanmsz.mszprogressindicator.progressindicator.*
 import com.kanyideveloper.haliyaanga.R
 import com.kanyideveloper.haliyaanga.model.Forecastday
 import com.kanyideveloper.haliyaanga.screens.common.StandardToolbar
+import com.kanyideveloper.haliyaanga.ui.theme.MyBlue
 import com.kanyideveloper.haliyaanga.ui.theme.SecondaryPrimaryDark
 import com.kanyideveloper.haliyaanga.util.dayOfTheWeek
 import com.kanyideveloper.haliyaanga.util.formatDate
@@ -49,7 +51,6 @@ fun HomeScreen(
         StandardToolbar(
             navigator = navigator,
             title = {
-                //Spacer(modifier = Modifier.height(16.dp))
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -58,7 +59,6 @@ fun HomeScreen(
                         Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        //Text(text = "Hali ya Anga", color = Color.White)
                         Row(
                             Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
@@ -93,17 +93,6 @@ fun HomeScreen(
             },
             modifier = Modifier.fillMaxWidth(),
             showBackArrow = false,
-            navActions = {
-/*                IconButton(onClick = {
-                    //navigator.navigate(SearchScreenDestination)
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                }*/
-            }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -195,7 +184,7 @@ fun HomeScreen(
 
             Column(
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = CenterHorizontally
             ) {
                 Text(
                     text = "Humidity",
@@ -294,9 +283,18 @@ fun HomeScreen(
             }
         )
 
-/*        if (state.isLoading) {
-            CircularProgressIndicator()
-        }*/
+        if (state.isLoading) {
+            BallClipRotateMultipleProgressIndicator(
+                modifier = Modifier.size(100.dp).align(CenterHorizontally),
+                color = MyBlue,
+                animationDuration = 800,
+                animationDelay = 200,
+                minGap = 30.dp,
+                maxGap = 40.dp,
+                strokeWidth = 1.5.dp,
+                //ballCount = 4
+            )
+        }
     }
 }
 

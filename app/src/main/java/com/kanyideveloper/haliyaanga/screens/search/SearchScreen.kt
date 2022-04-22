@@ -260,52 +260,6 @@ fun SearchScreen(
                     strokeWidth = 2.dp
                 )
             }
-
-
-/*            searchResult.apply {
-                when () {
-                    is LoadState.Loading -> {
-                    }
-                    is LoadState.Error -> {
-                        val e = searchResult.loadState.refresh as LoadState.Error
-                        Text(
-                            text = when (e.error) {
-                                is HttpException -> {
-                                    "Oops, something went wrong!"
-                                }
-                                is IOException -> {
-                                    "Couldn't reach server, check your internet connection!"
-                                }
-                                else -> {
-                                    "Unknown error occurred"
-                                }
-                            },
-                            modifier = Modifier
-                                .align(alignment = Alignment.Center)
-                                .padding(12.dp),
-                            textAlign = TextAlign.Center,
-                            color = primaryPink
-                        )
-                    }
-
-                    is LoadState.NotLoading -> {
-                        if (searchResult.itemCount <= 0) {
-                            Column(
-                                Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Image(
-                                    modifier = Modifier
-                                        .size(250.dp),
-                                    painter = painterResource(id = R.drawable.ic_empty_cuate),
-                                    contentDescription = null
-                                )
-                            }
-                        }
-                    }
-                }
-            }*/
         }
     }
 }

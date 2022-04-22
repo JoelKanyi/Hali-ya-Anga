@@ -8,6 +8,7 @@ import com.kanyideveloper.haliyaanga.data.remote.ApiService
 import com.kanyideveloper.haliyaanga.data.response.WeatherResponse
 import com.kanyideveloper.haliyaanga.util.Constants.WEATHER_LOCATION
 import com.kanyideveloper.haliyaanga.util.Resource
+import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -16,6 +17,9 @@ class DataRepository(
     private val dao: LocationsDao,
     private val sharedPreferences: SharedPreferences
 ) {
+
+    val currentlySelectedLocation =
+        MutableStateFlow(sharedPreferences.getString(WEATHER_LOCATION, "Nairobi"))
 
     suspend fun getWeatherData(location: String): Resource<WeatherResponse> {
         return try {
@@ -43,5 +47,6 @@ class DataRepository(
 
     fun saveToSharedPrefs(locationName: String) {
         sharedPreferences.edit().putString(WEATHER_LOCATION, locationName).apply()
+        currentlySelectedLocation.value = locationName
     }
 }

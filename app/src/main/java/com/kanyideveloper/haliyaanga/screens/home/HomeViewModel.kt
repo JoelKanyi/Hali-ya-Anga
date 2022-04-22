@@ -5,25 +5,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kanyideveloper.haliyaanga.data.repository.DataRepository
-import com.kanyideveloper.haliyaanga.util.Constants.WEATHER_LOCATION
 import com.kanyideveloper.haliyaanga.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: DataRepository,
-    private val locationName: String
 ) : ViewModel() {
 
     private val _state = mutableStateOf(HomeState())
     val state: State<HomeState> = _state
 
-    private val currentLocation = mutableStateOf(locationName)
+    private fun getNotifyFlow(): StateFlow<String?> = repository.currentlySelectedLocation
 
     init {
-        getWeatherData(currentLocation.value)
+        viewModelScope.launch {
+            getNotifyFlow().collect { location ->
+                location?.let { getWeatherData(it) }
+            }
+        }
     }
 
     private fun getWeatherData(location: String) {
@@ -43,6 +46,7 @@ class HomeViewModel @Inject constructor(
                         isLoading = false
                     )
                 }
+                else -> {}
             }
         }
     }

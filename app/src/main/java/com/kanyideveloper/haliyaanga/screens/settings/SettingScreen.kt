@@ -27,7 +27,6 @@ import com.kanyideveloper.haliyaanga.ui.theme.MyBlue
 import com.kanyideveloper.haliyaanga.ui.theme.SecondaryPrimaryDark
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import javax.inject.Inject
 
 @Destination
 @Composable
@@ -89,7 +88,7 @@ fun SettingScreen(
                                 )
                                 .show()
                         },
-                    backgroundColor = if (location.locationName == viewModel.currentLoc) {
+                    backgroundColor = if (location.locationName == viewModel.selectedLocation.value) {
                         MyBlue
                     } else SecondaryPrimaryDark,
                     elevation = 5.dp,
@@ -106,8 +105,12 @@ fun SettingScreen(
                             text = location.locationName,
                             color = Color.White
                         )
-                        if (location.locationName == viewModel.currentLoc) {
-                            Icon(imageVector = Icons.Default.Check, tint = Color.White, contentDescription = null)
+                        if (location.locationName == viewModel.selectedLocation.value) {
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                tint = Color.White,
+                                contentDescription = null
+                            )
                         }
                     }
                 }
