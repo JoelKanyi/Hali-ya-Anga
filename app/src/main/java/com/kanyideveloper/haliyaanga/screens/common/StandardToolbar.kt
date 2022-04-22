@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -29,13 +30,14 @@ fun StandardToolbar(
                 }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
-                        contentDescription = null
+                        contentDescription = null,
+                        tint = Color.White
                     )
                 }
             }
         } else null,
         actions = navActions,
         backgroundColor = MaterialTheme.colors.primary,
-        elevation = 0.dp
+        elevation = 0.dp,
     )
 }

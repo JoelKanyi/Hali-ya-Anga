@@ -1,8 +1,16 @@
 package com.kanyideveloper.haliyaanga.di
 
+import android.app.Application
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+import androidx.room.Room
+import com.kanyideveloper.haliyaanga.data.local.LocationsDao
+import com.kanyideveloper.haliyaanga.data.local.LocationsDatabase
 import com.kanyideveloper.haliyaanga.data.remote.ApiService
 import com.kanyideveloper.haliyaanga.data.repository.DataRepository
 import com.kanyideveloper.haliyaanga.util.Constants.BASE_URL
+import com.kanyideveloper.haliyaanga.util.Constants.DATABASE_NAME
+import com.kanyideveloper.haliyaanga.util.Constants.WEATHER_LOCATION
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +25,35 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Provides
+    @Singleton
+    fun provideSharedPrefs(application: Application): SharedPreferences {
+        return application.getSharedPreferences(
+            WEATHER_LOCATION,
+            MODE_PRIVATE
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherLocation(sharedPreferences: SharedPreferences): String {
+        return sharedPreferences.getString(WEATHER_LOCATION, "Nairobi") ?: "Nairobi"
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationsDatabase(application: Application): LocationsDatabase {
+        return Room.databaseBuilder(
+            application.applicationContext,
+            LocationsDatabase::class.java,
+            DATABASE_NAME
+        ).fallbackToDestructiveMigration().build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationsDao(locationsDatabase: LocationsDatabase) = locationsDatabase.dao
 
     @Singleton
     @Provides
@@ -50,5 +87,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDataRepository(apiService: ApiService) = DataRepository(apiService)
+    fun provideDataRepository(
+        apiService: ApiService,
+        locationsDao: LocationsDao,
+        sharedPreferences: SharedPreferences
+    ) = DataRepository(apiService, locationsDao, sharedPreferences)
 }

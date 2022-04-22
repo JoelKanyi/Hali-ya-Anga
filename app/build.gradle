@@ -102,6 +102,14 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
 
+    // Room
+    def room_version = "2.4.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:2.4.2"
+
     // Accompanist System UI controller
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.2-alpha"
 
@@ -116,4 +124,6 @@ dependencies {
 
     // Swipe to refresh
     implementation "com.google.accompanist:accompanist-swiperefresh:0.24.3-alpha"
+
+    implementation 'androidx.compose.runtime:runtime-livedata:1.2.0-alpha08'
 }

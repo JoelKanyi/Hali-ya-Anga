@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kanyideveloper.haliyaanga.data.repository.DataRepository
+import com.kanyideveloper.haliyaanga.util.Constants.WEATHER_LOCATION
 import com.kanyideveloper.haliyaanga.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,14 +13,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: DataRepository
+    private val repository: DataRepository,
+    private val locationName: String
 ) : ViewModel() {
 
     private val _state = mutableStateOf(HomeState())
     val state: State<HomeState> = _state
 
-    private val _currentLocation = mutableStateOf("Bungoma")
-    val currentLocation: State<String> = _currentLocation
+    private val currentLocation = mutableStateOf(locationName)
 
     init {
         getWeatherData(currentLocation.value)
