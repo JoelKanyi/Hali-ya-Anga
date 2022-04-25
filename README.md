@@ -1,4 +1,4 @@
-# Muviz
+# Hali ya Anga
 An Android app built with Jetpack Compose consuming [Weather API](https://www.weatherapi.com/) to help users get weather updates for any location.
 
 ## Demo
